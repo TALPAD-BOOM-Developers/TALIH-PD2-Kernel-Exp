@@ -40,6 +40,13 @@ jobs:
           # 本 MTK 4.19 树无 xt_qtaguid(官方补丁 01 不适用)，仅 cgroup 前缀补丁
           patch -p1 < patch/02.fix_restore_cgroup_file_prefix_handling.patch
 
+      - name: Apply ABI-preserving patch (SYSVIPC vs vendor modules)
+        run: |
+          # SYSVIPC/IPC_NS/POSIX_MQUEUE 改变 task_struct/user_struct 布局，会导致
+          # 预编译厂商模块 CRC 校验失败(module_layout 等)而拒绝加载。此补丁把新增
+          # 字段移到结构体末尾并对 genksyms 隐藏，保持既有偏移与 CRC 不变。
+          patch -p1 < patch/60_abi_preserve_sysvipc.patch
+
       - name: Build kernel
         run: |
           chmod +x build-mt8797.sh

@@ -633,13 +633,7 @@ CONFIG_POSIX_MQUEUE=y
 # namespaces
 CONFIG_IPC_NS=y
 CONFIG_USER_NS=y
-CONFIG_CGROUP_NS=y
 # cgroup resource limits (--memory/--cpus/--pids-limit)
-CONFIG_CGROUP_DEVICE=y
-CONFIG_CGROUP_NET_PRIO=y
-CONFIG_CFS_BANDWIDTH=y
-CONFIG_CGROUP_PIDS=y
-CONFIG_MEMCG_SWAP_ENABLED=y
 # device filesystem (不启用 DEVTMPFS_MOUNT，init 仍接管 /dev)
 CONFIG_DEVTMPFS=y
 # tmpfs xattr/acl (NixOS)
