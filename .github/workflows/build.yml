@@ -35,10 +35,9 @@ jobs:
         run: |
           patch -p1 < patch/50_add_susfs_in_kernel-4.19.patch
 
-      - name: Apply Droidspaces/LXC patch (cgroup file prefix)
-        run: |
-          # 本 MTK 4.19 树无 xt_qtaguid(官方补丁 01 不适用)，仅 cgroup 前缀补丁
-          patch -p1 < patch/02.fix_restore_cgroup_file_prefix_handling.patch
+      # 注意: 官方 cgroup 文件前缀补丁(02) 经实测会导致 bootloop
+      # (/dev/cpuset 以 noprefix 挂载时 kernfs_create_link 路径在 MTK 内核崩溃)，
+      # 已移除，待找到安全实现方式后再启用。
 
       - name: Apply ABI-preserving patch (SYSVIPC vs vendor modules)
         run: |
