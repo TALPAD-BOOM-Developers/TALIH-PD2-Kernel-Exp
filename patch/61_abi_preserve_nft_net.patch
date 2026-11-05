@@ -1,0 +1,30 @@
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index 8026c2386..ca480dce1 100755
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -123,9 +123,6 @@ struct net {
+ #if defined(CONFIG_NF_CONNTRACK) || defined(CONFIG_NF_CONNTRACK_MODULE)
+ 	struct netns_ct		ct;
+ #endif
+-#if defined(CONFIG_NF_TABLES) || defined(CONFIG_NF_TABLES_MODULE)
+-	struct netns_nftables	nft;
+-#endif
+ #if IS_ENABLED(CONFIG_NF_DEFRAG_IPV6)
+ 	struct netns_nf_frag	nf_frag;
+ 	struct ctl_table_header *nf_frag_frags_hdr;
+@@ -158,6 +155,15 @@ struct net {
+ 	struct netns_can	can;
+ #endif
+ 	struct sock		*diag_nlsk;
++
++#ifndef __GENKSYMS__
++#if defined(CONFIG_NF_TABLES) || defined(CONFIG_NF_TABLES_MODULE)
++	/* Droidspaces/ABI-preserving: kept at struct end so all pre-existing
++	 * member offsets stay identical, hidden from genksyms so struct net
++	 * CRC does not change (vendor module CRC compatibility). */
++	struct netns_nftables	nft;
++#endif
++#endif
+ 	atomic_t		fnhe_genid;
+ } __randomize_layout;
+ 
